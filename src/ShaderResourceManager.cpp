@@ -38,8 +38,8 @@ void ShaderResourceManager::loadProgram(
 
 	std::unordered_set<std::string> vertIncludes;
 	std::unordered_set<std::string> fragIncludes;
-	std::string vertTxt = preprocessGLSL(vert_path, vertIncludes);
-	std::string fragTxt = preprocessGLSL(vert_path, fragIncludes);
+	std::string vertTxt = preprocessGLSL(vert_path, vertIncludes, true);
+	std::string fragTxt = preprocessGLSL(frag_path, fragIncludes, true);
 
 	GLuint vertShader = compileShader(GL_VERTEX_SHADER, vertTxt);
 	GLuint fragShader = compileShader(GL_FRAGMENT_SHADER, fragTxt);
@@ -56,33 +56,66 @@ void ShaderResourceManager::loadProgram(
 //should also include checking for correct file extension
 std::string ShaderResourceManager::preprocessGLSL(
 	const std::string& file_path,
-	std::unordered_set<std::string>& seen_includes)
+	std::unordered_set<std::string>& seen_includes, bool is_root_file)
 {
+	//replace backslashed with forward slashed so GLSL doesn't process as escape
+	std::string fixedPath = file_path;
+	std::replace(fixedPath.begin(), fixedPath.end(), '\\', '/');
+
 	if (seen_includes.count(file_path)) return ""; //if we have already processed this include
+	seen_includes.insert(file_path);
 	std::ifstream file(file_path);
 	if (!file.is_open()) throw std::runtime_error("Cannot open file : " + file_path);
 
-	std::stringstream out;
-	out << "#line 1 \"" << file_path << "\"\n"; //little confused by this
+	std::stringstream body;
+	std::string versionLine;
 	std::string line;
+
 	while (std::getline(file, line)) {
-		if (line.rfind("#include", 0) == 0) { //if it finds include at the start of the line
+		if (line.rfind("#version", 0) == 0) {
+			if (is_root_file) {
+				versionLine = line + "\n";
+			}
+		} else if (line.rfind("#include", 0) == 0) { //if it finds include at the start of the line
 			//grab whatever is in the include
 			auto start = line.find('"') + 1;
 			auto end = line.find('"', start); 
 			std::string include = line.substr(start, end - start);
-			out << preprocessGLSL(include, seen_includes);
+			body << preprocessGLSL(include, seen_includes, false);
 		}
 		else {
-			out << line << "\n";
+			body << line << "\n";
 		}
 	}
-	return out.str(); //might need to be a c_str we shall see
+	std::stringstream final;
+	if (!versionLine.empty()) final << versionLine;
+	final << "#line 1\n";
+	final << body.str();
+
+	return final.str(); //might need to be a c_str we shall see
 	//maybe do it here instead of compile shader
 }
 
 GLuint ShaderResourceManager::compileShader(GLenum type, const std::string& source) {
 	GLuint shader = glCreateShader(type);
+	std::cout << "glCreateShader ptr: " << (void*)glCreateShader << std::endl;
+	std::cout << "Compiling shader:\n" << source << "\n---" << std::endl;
+	std::cout << "Type: " << ((type == GL_VERTEX_SHADER) ? "Vertex" : "Fragment") << std::endl;
+
+
+	// Display shader type to console
+	const char* shaderTypeStr = nullptr;
+	switch (type) {
+		case GL_VERTEX_SHADER: shaderTypeStr = "Vertex Shader"; break;
+		case GL_FRAGMENT_SHADER: shaderTypeStr = "Fragment Shader"; break;
+		case GL_GEOMETRY_SHADER: shaderTypeStr = "Geometry Shader"; break;
+		case GL_COMPUTE_SHADER: shaderTypeStr = "Compute Shader"; break;
+		case GL_TESS_CONTROL_SHADER: shaderTypeStr = "Tessellation Control Shader"; break;
+		case GL_TESS_EVALUATION_SHADER: shaderTypeStr = "Tessellation Evaluation Shader"; break;
+		default: shaderTypeStr = "Unknown Shader Type"; break;
+	}
+	std::cout << "Created shader of type: " << shaderTypeStr << std::endl;
+
 	const char* src = source.c_str();
 	glShaderSource(shader, 1, &src, nullptr);
 	glCompileShader(shader);
@@ -94,7 +127,7 @@ GLuint ShaderResourceManager::compileShader(GLenum type, const std::string& sour
 		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLen);
 		std::string log(logLen, ' '); //odd line
 		glGetShaderInfoLog(shader, logLen, nullptr, &log[0]); //also off
-		std::cerr << "shader compile error : \n" << log << std::endl; //specify enum name
+		std::cerr << "shader compile error in :" << source << "\n" << log << std::endl; //specify enum name
 		throw std::runtime_error("failed to compile shader");
 	}
 	return shader;

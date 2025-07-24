@@ -24,13 +24,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\shaders\OpenGL\test.frag">
-      <Filter>Resource Files\shaders\OpenGL</Filter>
-    </None>
     <None Include="res\shaders\common\common.glsl">
       <Filter>Resource Files\shaders\common</Filter>
     </None>
     <None Include="res\shaders\OpenGL\test.vert" />
+    <None Include=".gitignore" />
+    <None Include="res\shaders\OpenGL\test.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">

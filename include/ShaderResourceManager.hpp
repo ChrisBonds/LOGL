@@ -7,6 +7,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <glad/glad.h>
+#include <algorithm>
 
 struct ShaderProgram {
 	GLuint id;
@@ -31,7 +32,8 @@ private:
 
 	std::unordered_map<std::string, ShaderProgram> programs_;
 
-	std::string preprocessGLSL(const std::string& file_path, std::unordered_set<std::string>& seen_includes);
+	std::string preprocessGLSL(const std::string& file_path, std::unordered_set<std::string>& seen_includes,
+		bool is_root_file);
 
 	GLuint compileShader(GLenum type, const std::string& source);
 	//just handles vert and frag for now but will need to expand functionality
