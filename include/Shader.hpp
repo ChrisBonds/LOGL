@@ -5,6 +5,8 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <unordered_set>
+#include <algorithm>
 
 class Shader {
 public:
@@ -19,5 +21,8 @@ public:
 	void setFloat(const std::string& name, float val) const;
 private:
 	void checkCompileErrors(GLint shader, std::string type);
+	std::string preprocessGLSL(const std::string& file_path,
+							   std::unordered_set<std::string>& seen_includes,
+							   bool is_root_file);
 };
 #endif // !SHADER_H

@@ -1,6 +1,8 @@
 #include "Shader.hpp"
 
 Shader::Shader(const char* vertex_path, const char* fragment_path) {
+	std::unordered_set<std::string> vertIncludes;
+	std::unordered_set<std::string> fragIncludes;
 	std::string vertexCode;
 	std::string fragmentCode;
 	std::ifstream vShaderFile;
@@ -9,7 +11,8 @@ Shader::Shader(const char* vertex_path, const char* fragment_path) {
 	fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 
 	try {
-		vShaderFile.open(vertex_path);
+		//if this works first try im goated
+		/*vShaderFile.open(vertex_path);
 		fShaderFile.open(fragment_path);
 		std::stringstream vShaderStream, fShaderStream;
 		vShaderStream << vShaderFile.rdbuf();
@@ -18,7 +21,11 @@ Shader::Shader(const char* vertex_path, const char* fragment_path) {
 		fShaderFile.close();
 
 		vertexCode = vShaderStream.str();
-		fragmentCode = fShaderStream.str();
+		fragmentCode = fShaderStream.str();*/
+
+		vertexCode = preprocessGLSL(vertex_path, vertIncludes, true);
+		fragmentCode = preprocessGLSL(fragment_path, fragIncludes, true);
+
 
 	}
 	catch (std::ifstream::failure& e) {
@@ -79,4 +86,47 @@ void Shader::checkCompileErrors(GLint shader, std::string type) {
 			std::cout << "ERROR::PROGRAM_LINKING_ERROR of type : " << type << "\n" << infoLog << "\n\n";
 		}
 	}
+}
+
+std::string Shader::preprocessGLSL(
+	const std::string& file_path,
+	std::unordered_set<std::string>& seen_includes, bool is_root_file)
+{
+	//replace backslashed with forward slashed so GLSL doesn't process as escape
+	std::string fixedPath = file_path;
+	std::replace(fixedPath.begin(), fixedPath.end(), '\\', '/');
+
+	if (seen_includes.count(file_path)) return ""; //if we have already processed this include
+	seen_includes.insert(file_path);
+	std::ifstream file(file_path);
+	if (!file.is_open()) throw std::runtime_error("Cannot open file : " + file_path);
+
+	std::stringstream body;
+	std::string versionLine;
+	std::string line;
+
+	while (std::getline(file, line)) {
+		if (line.rfind("#version", 0) == 0) {
+			if (is_root_file) {
+				versionLine = line + "\n";
+			}
+		}
+		else if (line.rfind("#include", 0) == 0) { //if it finds include at the start of the line
+			//grab whatever is in the include
+			auto start = line.find('"') + 1;
+			auto end = line.find('"', start);
+			std::string include = line.substr(start, end - start);
+			body << preprocessGLSL(include, seen_includes, false);
+		}
+		else {
+			body << line << "\n";
+		}
+	}
+	std::stringstream final;
+	if (!versionLine.empty()) final << versionLine;
+	final << "#line 1\n";
+	final << body.str();
+
+	return final.str(); //might need to be a c_str we shall see
+	//maybe do it here instead of compile shader
 }
