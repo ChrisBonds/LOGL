@@ -44,6 +44,9 @@
     <ClCompile Include="src\WindowManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ShaderResourceManager.hpp">
@@ -53,6 +56,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\GL_Compatability\GL_chris.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shader.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

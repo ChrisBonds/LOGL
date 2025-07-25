@@ -4,7 +4,8 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include "WindowManager.hpp"
-#include "ShaderResourceManager.hpp"
+//#include "ShaderResourceManager.hpp"
+#include "Shader.hpp"
 
 static int WINDOW_WIDTH = 800;
 static int WINDOW_HEIGHT = 600;
@@ -36,15 +37,16 @@ int main() {
 
 	//compile shaders here 
 
-	auto& shaderManagerRef = ShaderResourceManager::instance();
+	/*auto& shaderManagerRef = ShaderResourceManager::instance();
 	shaderManagerRef.loadProgram("OpenGL_triangle", R"(C:\Users\cwbon\Shaders\FRESH\res\shaders\OpenGL\test.vert)", R"(C:\Users\cwbon\Shaders\FRESH\res\shaders\OpenGL\test.frag)");
-	//ok now im just gonna copy the code from learnopengl cuz i dont feel like putting it in the manager yet 
+	*/ 
+	Shader shader(R"(C:\Users\cwbon\Shaders\FRESH\res\shaders\OpenGL\test.vert)", R"(C:\Users\cwbon\Shaders\FRESH\res\shaders\OpenGL\test.frag)");
 
 	float vertices[] = {
-		.5f, .5f, .0f, //top right
-		.5f, -.5f, .0f, // bottom right
-		-.5f, -.5f, .0f, //bottom left
-		-.5f, .5f, .0f //top left
+		//positions			 //colors
+		 0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
+		-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
+		 0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
 	};
 
 	unsigned int indices[] = {
@@ -62,8 +64,14 @@ int main() {
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * (sizeof(float)), (void*)0);//no idea why u make that stupid ass pointer
+	//position attribute pointer
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * (sizeof(float)), (void*)0);
 	glEnableVertexAttribArray(0);
+	//color attribute pointer
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));//sepcify offset
+	glEnableVertexAttribArray(1);
+	
+
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0); //often unnecessary to unbind VAO for some reason i dont understand idk prolly gonna need to refer back to this section often
 	// uncomment this call to draw in wireframe polygons.
@@ -76,11 +84,17 @@ int main() {
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glUseProgram(shaderManagerRef.getProgram("OpenGL_triangle").id); //evil syntax
+		//glUseProgram(shaderManagerRef.getProgram("OpenGL_triangle").id); //evil syntax
+		shader.use();
+		float timeValue = glfwGetTime(); //value gets updated after program is in use
+		float greenValue = (sin(timeValue) / 2.0f) + .5f;
+		int vertexColorLocation = glGetUniformLocation(shader.ID, "ourColor");
+
+		glUniform4f(vertexColorLocation, .0f, greenValue, .0f, 1.0f);
 		glBindVertexArray(VAO);//no idea why we call after using the program
-		//glDrawArrays(GL_TRIANGLES, 0, 6);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		glfwSwapBuffers(window); //double buffer 
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glfwSwapBuffers(window); //double buffer	
 		glfwPollEvents();
 	}
 

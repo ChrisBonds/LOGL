@@ -142,11 +142,13 @@
   <ItemGroup>
     <ClCompile Include="..\glad(4.6)\src\glad.c" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\ShaderResourceManager.cpp" />
     <ClCompile Include="src\WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\GL_Compatability\GL_chris.hpp" />
+    <ClInclude Include="include\Shader.hpp" />
     <ClInclude Include="include\ShaderResourceManager.hpp" />
     <ClInclude Include="include\WindowManager.hpp" />
   </ItemGroup>

@@ -98,23 +98,23 @@ std::string ShaderResourceManager::preprocessGLSL(
 
 GLuint ShaderResourceManager::compileShader(GLenum type, const std::string& source) {
 	GLuint shader = glCreateShader(type);
-	std::cout << "glCreateShader ptr: " << (void*)glCreateShader << std::endl;
+	/*std::cout << "glCreateShader ptr: " << (void*)glCreateShader << std::endl;
 	std::cout << "Compiling shader:\n" << source << "\n---" << std::endl;
-	std::cout << "Type: " << ((type == GL_VERTEX_SHADER) ? "Vertex" : "Fragment") << std::endl;
+	std::cout << "Type: " << ((type == GL_VERTEX_SHADER) ? "Vertex" : "Fragment") << std::endl;*/
 
 
-	// Display shader type to console
-	const char* shaderTypeStr = nullptr;
-	switch (type) {
-		case GL_VERTEX_SHADER: shaderTypeStr = "Vertex Shader"; break;
-		case GL_FRAGMENT_SHADER: shaderTypeStr = "Fragment Shader"; break;
-		case GL_GEOMETRY_SHADER: shaderTypeStr = "Geometry Shader"; break;
-		case GL_COMPUTE_SHADER: shaderTypeStr = "Compute Shader"; break;
-		case GL_TESS_CONTROL_SHADER: shaderTypeStr = "Tessellation Control Shader"; break;
-		case GL_TESS_EVALUATION_SHADER: shaderTypeStr = "Tessellation Evaluation Shader"; break;
-		default: shaderTypeStr = "Unknown Shader Type"; break;
-	}
-	std::cout << "Created shader of type: " << shaderTypeStr << std::endl;
+	//// Display shader type to console
+	//const char* shaderTypeStr = nullptr;
+	//switch (type) {
+	//	case GL_VERTEX_SHADER: shaderTypeStr = "Vertex Shader"; break;
+	//	case GL_FRAGMENT_SHADER: shaderTypeStr = "Fragment Shader"; break;
+	//	case GL_GEOMETRY_SHADER: shaderTypeStr = "Geometry Shader"; break;
+	//	case GL_COMPUTE_SHADER: shaderTypeStr = "Compute Shader"; break;
+	//	case GL_TESS_CONTROL_SHADER: shaderTypeStr = "Tessellation Control Shader"; break;
+	//	case GL_TESS_EVALUATION_SHADER: shaderTypeStr = "Tessellation Evaluation Shader"; break;
+	//	default: shaderTypeStr = "Unknown Shader Type"; break;
+	//}
+	//std::cout << "Created shader of type: " << shaderTypeStr << std::endl;
 
 	const char* src = source.c_str();
 	glShaderSource(shader, 1, &src, nullptr);
