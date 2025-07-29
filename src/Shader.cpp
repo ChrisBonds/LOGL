@@ -1,5 +1,6 @@
 #include "Shader.hpp"
 
+
 Shader::Shader(const char* vertex_path, const char* fragment_path) {
 	std::unordered_set<std::string> vertIncludes;
 	std::unordered_set<std::string> fragIncludes;
@@ -89,6 +90,7 @@ void Shader::checkCompileErrors(GLint shader, std::string type) {
 }
 
 std::string Shader::preprocessGLSL(
+	//change to std::filepath later
 	const std::string& file_path,
 	std::unordered_set<std::string>& seen_includes, bool is_root_file)
 {
