@@ -6,6 +6,7 @@
 #include "WindowManager.hpp"
 //#include "ShaderResourceManager.hpp"
 #include "Shader.hpp"
+#include "Texture.hpp"
 
 static int WINDOW_WIDTH = 800;
 static int WINDOW_HEIGHT = 600;
@@ -43,10 +44,11 @@ int main() {
 	Shader shader(R"(C:\Users\cwbon\Shaders\FRESH\res\shaders\OpenGL\test.vert)", R"(C:\Users\cwbon\Shaders\FRESH\res\shaders\OpenGL\test.frag)");
 
 	float vertices[] = {
-		//positions			 //colors
-		 0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
-		-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
-		 0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
+		// positions          // colors           // texture coords
+		 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
+		 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
+		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
+		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left 
 	};
 
 	unsigned int indices[] = {
@@ -70,12 +72,24 @@ int main() {
 	//color attribute pointer
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));//sepcify offset
 	glEnableVertexAttribArray(1);
-	
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0); //often unnecessary to unbind VAO for some reason i dont understand idk prolly gonna need to refer back to this section often
 	// uncomment this call to draw in wireframe polygons.
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	//init textures here 
+	Texture containerTexture(R"(C:\Users\cwbon\Shaders\FRESH\res\textures\container.jpg)");
+	Texture epicTexture(R"(C:\Users\cwbon\Shaders\FRESH\res\textures\awesomeface.png)");
+
+	shader.use();
+	//manual set
+	glUniform1i(glGetUniformLocation(shader.ID, "texture1"), 0);
+	//set using class
+	shader.setInt("texture2", 1);
+
+
+	//    stbi_image_free(data); calls before entering render loop but should probably be after data is loaded?? bind funcion
 
 	//render loop
 	while (!glfwWindowShouldClose(window)) {
