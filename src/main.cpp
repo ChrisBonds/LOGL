@@ -3,10 +3,12 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <filesystem>
 #include "WindowManager.hpp"
 //#include "ShaderResourceManager.hpp"
 #include "Shader.hpp"
 #include "Texture.hpp"
+#include <unordered_map>
 
 static int WINDOW_WIDTH = 800;
 static int WINDOW_HEIGHT = 600;
@@ -56,6 +58,7 @@ int main() {
 		1,2,3
 	};
 
+	//buffer class fo shizzle 
 	//so much shit here
 	unsigned int VBO, VAO, EBO;
 	glGenVertexArrays(1, &VAO);
@@ -66,21 +69,29 @@ int main() {
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
 	//position attribute pointer
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * (sizeof(float)), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8*(sizeof(float)), (void*)0);
 	glEnableVertexAttribArray(0);
 	//color attribute pointer
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));//sepcify offset
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8*sizeof(float), (void*)(3 * sizeof(float)));//sepcify offset
 	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(2);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0); //often unnecessary to unbind VAO for some reason i dont understand idk prolly gonna need to refer back to this section often
 	// uncomment this call to draw in wireframe polygons.
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
 	//init textures here 
-	Texture containerTexture(R"(C:\Users\cwbon\Shaders\FRESH\res\textures\container.jpg)");
-	Texture epicTexture(R"(C:\Users\cwbon\Shaders\FRESH\res\textures\awesomeface.png)");
+	std::unordered_map<std::filesystem::path, GLuint> textureCache;
+
+	TextureInfo containerTextureInfo(std::filesystem::path(R"(C:\Users\cwbon\Shaders\FRESH\res\textures\container.jpg)"));
+	//TextureInfo(R"(C:\Users\cwbon\Shaders\FRESH\res\textures\container.jpg)");
+	Texture containerTexture(containerTextureInfo);
+	//Texture epicTexture(R"(C:\Users\cwbon\Shaders\FRESH\res\textures\awesomeface.png)");
+	TextureInfo epicTextureInfo(std::filesystem::path(R"(C:\Users\cwbon\Shaders\FRESH\res\textures\awesomeface.png)"));
+	Texture epicTexture(epicTextureInfo);
 
 	shader.use();
 	//manual set
@@ -97,6 +108,12 @@ int main() {
 
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
+
+		//TODO : bindings in class
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, containerTexture.getID());
+
 
 		//glUseProgram(shaderManagerRef.getProgram("OpenGL_triangle").id); //evil syntax
 		shader.use();

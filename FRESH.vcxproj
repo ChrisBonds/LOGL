@@ -143,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\glad(4.6)\src\glad.c" />
+    <ClCompile Include="include\structs\TextureInfo.hpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\ShaderResourceManager.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="include\WindowManager.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\textures\awesomeface.png" />
     <Image Include="res\textures\container.jpg" />
     <Image Include="res\textures\wall.jpg" />
   </ItemGroup>

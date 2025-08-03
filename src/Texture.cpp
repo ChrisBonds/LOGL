@@ -4,21 +4,33 @@
 
 #include "Texture.hpp"
 
-Texture::Texture(const std::filesystem::path& file_path) {
+//must be able to distinguish between RGB and RGBA
+
+Texture::Texture(const TextureInfo& info) {
 	
+	INFO_ = info;
+	INFO_.printTextureInfo();
+
+
+	//change all these 
 	glGenTextures(1, &ID_);
 	//hardcode this shit cuz im tired
-	glBindTexture(GL_TEXTURE_2D, ID_);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-
-	//should seperate into setup and implementation cuz when u do the stuff theres really just a lot of stuff to do and i wanna avoid the annoying boilerplate 
-	loadFromFile(file_path);
+	glBindTexture(INFO_.textureDimension, ID_);
+	glTexParameteri(INFO_.textureDimension, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(INFO_.textureDimension, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(INFO_.textureDimension, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
+	glTexParameteri(INFO_.textureDimension, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
+void Texture::bind() {
+	glBindTexture(INFO_.textureDimension, ID_);
 
+	glTexParameteri(INFO_.textureDimension, GL_TEXTURE_WRAP_S, INFO_.wrapMode);
+	glTexParameteri(INFO_.textureDimension, GL_TEXTURE_WRAP_T, INFO_.wrapMode);
+	glTexParameteri(INFO_.textureDimension, GL_TEXTURE_MIN_FILTER, INFO_.minFilter);
+	glTexParameteri(INFO_.textureDimension, GL_TEXTURE_MAG_FILTER, INFO_.magFilter);
+
+	//stbi_set_flip_vertically_on_load(INFO_.flipVertically); //this should be called on load instead
+}
 void Texture::loadFromFile(const std::filesystem::path& file_path) {
 	int w, h, nChannels;
 	unsigned char* data;
@@ -28,8 +40,8 @@ void Texture::loadFromFile(const std::filesystem::path& file_path) {
 	const char* pathCString = pathString.c_str();
 	data = stbi_load(pathCString,&w, &h, &nChannels, 0);
 	if (data) {
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, data); //pretty sure this is supposed to be a reference
-		glGenerateMipmap(GL_TEXTURE_2D);
+		glTexImage2D(INFO_.textureDimension, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, data); //pretty sure this is supposed to be a reference
+		glGenerateMipmap(INFO_.textureDimension);
 	}
 	else {
 		std::cout << "failed to load texture data from : " << file_path << std::endl;
