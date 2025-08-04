@@ -10,18 +10,15 @@ Texture::Texture(const TextureInfo& info) {
 	
 	INFO_ = info;
 	INFO_.printTextureInfo();
-
-
-	//change all these 
 	glGenTextures(1, &ID_);
-	//hardcode this shit cuz im tired
-	glBindTexture(INFO_.textureDimension, ID_);
-	glTexParameteri(INFO_.textureDimension, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(INFO_.textureDimension, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(INFO_.textureDimension, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
-	glTexParameteri(INFO_.textureDimension, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	bind(INFO_.unit);
+	loadFromFile(INFO_.filePath);
 }
-void Texture::bind() {
+Texture::~Texture() {
+	glDeleteTextures(1, &ID_);
+}
+
+void Texture::bind(GLenum unit) const{
 	glBindTexture(INFO_.textureDimension, ID_);
 
 	glTexParameteri(INFO_.textureDimension, GL_TEXTURE_WRAP_S, INFO_.wrapMode);
@@ -31,6 +28,13 @@ void Texture::bind() {
 
 	//stbi_set_flip_vertically_on_load(INFO_.flipVertically); //this should be called on load instead
 }
+void Texture::unbind() const{
+
+}
+
+GLuint Texture::getID()const { return ID_; }
+TextureInfo Texture::getInfo()const { return INFO_; }
+
 void Texture::loadFromFile(const std::filesystem::path& file_path) {
 	int w, h, nChannels;
 	unsigned char* data;
@@ -38,17 +42,14 @@ void Texture::loadFromFile(const std::filesystem::path& file_path) {
 	//give these guys their own memory for now because ik something is gonna fuck up
 	std::string pathString = file_path.string();
 	const char* pathCString = pathString.c_str();
+	std::cout << "data path :" << pathCString << std::endl;
 	data = stbi_load(pathCString,&w, &h, &nChannels, 0);
 	if (data) {
-		glTexImage2D(INFO_.textureDimension, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, data); //pretty sure this is supposed to be a reference
+		glTexImage2D(INFO_.textureDimension, 0, INFO_.format, w, h, 0, INFO_.format, GL_UNSIGNED_BYTE, data); //pretty sure this is supposed to be a reference
 		glGenerateMipmap(INFO_.textureDimension);
 	}
 	else {
 		std::cout << "failed to load texture data from : " << file_path << std::endl;
 	}
 	stbi_image_free(data); //pretty sure this is supposed to be a reference
-}
-
-Texture::~Texture() {
-	glDeleteTextures(1, &ID_);
 }

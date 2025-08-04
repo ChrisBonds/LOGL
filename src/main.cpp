@@ -79,24 +79,23 @@ int main() {
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 	glEnableVertexAttribArray(2);
 
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0); //often unnecessary to unbind VAO for some reason i dont understand idk prolly gonna need to refer back to this section often
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+	//glBindVertexArray(0); //often unnecessary to unbind VAO for some reason i dont understand idk prolly gonna need to refer back to this section often
 	// uncomment this call to draw in wireframe polygons.
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	
 	//init textures here 
 	std::unordered_map<std::filesystem::path, GLuint> textureCache;
 
-	TextureInfo containerTextureInfo(std::filesystem::path(R"(C:\Users\cwbon\Shaders\FRESH\res\textures\container.jpg)"));
+	TextureInfo containerTextureInfo(std::filesystem::path(R"(C:\Users\cwbon\Shaders\FRESH\res\textures\container.jpg)"), GL_TEXTURE0);
 	//TextureInfo(R"(C:\Users\cwbon\Shaders\FRESH\res\textures\container.jpg)");
 	Texture containerTexture(containerTextureInfo);
 	//Texture epicTexture(R"(C:\Users\cwbon\Shaders\FRESH\res\textures\awesomeface.png)");
-	TextureInfo epicTextureInfo(std::filesystem::path(R"(C:\Users\cwbon\Shaders\FRESH\res\textures\awesomeface.png)"));
+	TextureInfo epicTextureInfo(std::filesystem::path(R"(C:\Users\cwbon\Shaders\FRESH\res\textures\awesomeface.png)"), GL_TEXTURE1, GL_RGBA);
 	Texture epicTexture(epicTextureInfo);
 
 	shader.use();
-	//manual set
-	glUniform1i(glGetUniformLocation(shader.ID, "texture1"), 0);
-	//set using class
+	shader.setInt("texture1", 0);
 	shader.setInt("texture2", 1);
 
 
@@ -111,24 +110,32 @@ int main() {
 
 		//TODO : bindings in class
 
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, containerTexture.getID());
+		glActiveTexture(containerTexture.getInfo().unit);
+		glBindTexture(containerTexture.getInfo().textureDimension, containerTexture.getID());
+		glActiveTexture(epicTexture.getInfo().unit);
+		glBindTexture(epicTexture.getInfo().textureDimension, epicTexture.getID());
 
 
 		//glUseProgram(shaderManagerRef.getProgram("OpenGL_triangle").id); //evil syntax
 		shader.use();
-		float timeValue = glfwGetTime(); //value gets updated after program is in use
-		float greenValue = (sin(timeValue) / 2.0f) + .5f;
-		int vertexColorLocation = glGetUniformLocation(shader.ID, "ourColor");
-
-		glUniform4f(vertexColorLocation, .0f, greenValue, .0f, 1.0f);
+		//float timeValue = glfwGetTime(); //value gets updated after program is in use
+		//float greenValue = (sin(timeValue) / 2.0f) + .5f;
+		//int vertexColorLocation = glGetUniformLocation(shader.ID, "ourColor");
+		//glUniform4f(vertexColorLocation, .0f, greenValue, .0f, 1.0f);
+		
 		glBindVertexArray(VAO);//no idea why we call after using the program
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		
 		glfwSwapBuffers(window); //double buffer	
 		glfwPollEvents();
 	}
 
+	// optional: de-allocate all resources once they've outlived their purpose:
+// ------------------------------------------------------------------------
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &EBO);
 
 	//clean glfw resources
 	glfwTerminate();
