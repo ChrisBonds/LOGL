@@ -7,6 +7,8 @@
 
 //prolly gonna be a big guy theres lots of cool texturing stuff to do
 
+//TODO : move textureinfo inside of texture and make sure everything works with the excersises 
+
 class Texture {
 public:
 	//allow a default constructor?
