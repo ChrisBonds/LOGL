@@ -22,7 +22,7 @@ struct TextureInfo {
 	TextureInfo(const std::filesystem::path& file_path = std::filesystem::path(),
 				GLenum texture_unit = GL_TEXTURE0,
 				GLenum format = GL_RGB, //rf name 
-				GLint wrap_mode = GL_REPEAT,
+				GLint wrap_mode = GL_REPEAT,	
 				bool flip_vertically = true, //do not want to call this state every time 
 				GLenum texture_dimension = GL_TEXTURE_2D,
 				GLenum min_filter = GL_TEXTURE_MIN_FILTER,
