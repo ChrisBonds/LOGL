@@ -1,5 +1,6 @@
 //#define GLFW_STATIC
 //#include "GL_Compatability/GL_chris.hpp"
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
@@ -12,9 +13,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
-static int WINDOW_WIDTH = 800;
-static int WINDOW_HEIGHT = 600;
 
 
 int main() {
@@ -32,7 +30,11 @@ int main() {
 		return -1;
 	}
 	glfwMakeContextCurrent(window);
+	//have to init
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback); //weird that this is legal
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetCursorPosCallback(window, mouse_callback);
+
 
 
 	//load glad opengl function pointers 
@@ -197,11 +199,19 @@ int main() {
 //		glm::mat4 projection;
 //		projection = glm::perspective(glm::radians(42.0f), (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 0.1f, 100.0f);
 
+	//glm::vec3 CAMERA_POS= glm::vec3(0.0f, 0.0f, 3.0f);
+	const float radius = 10.0f;
+	Camera camera(glm::vec3(0.0f, 0.0f, -3.0f));
+	float dt = 0.0;
+	float lastFrame = 0.0;
+	float currentFrame;
 
-	
 	//render loop
 	while (!glfwWindowShouldClose(window)) {
-		processInput(window);
+		currentFrame = static_cast<float>(glfwGetTime());
+		dt = currentFrame - lastFrame;
+		lastFrame = currentFrame;
+		processInput(window, camera, dt);
 
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -216,16 +226,23 @@ int main() {
 		glActiveTexture(joshTexture.getInfo().unit);
 		glBindTexture(joshTexture.getInfo().textureDimension, joshTexture.getID());
 
-
 		//glUseProgram(shaderManagerRef.getProgram("OpenGL_triangle").id); //evil syntax
 		shader.use();
+
 		glm::mat4 model = glm::mat4(1.0f);
 		glm::mat4 view = glm::mat4(1.0f);
 		glm::mat4 projection = glm::mat4(1.0f);
 
-		model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
-		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-		projection = glm::perspective(glm::radians(42.0f), (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 0.1f, 100.0f);
+		glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+		glm::vec3 cameraDirection = glm::normalize(camera.pos - cameraTarget);
+		glm::vec3 worldUp = glm::vec3(0.0f, 1.0f, 0.0f);
+		glm::vec3 cameraRight = glm::normalize(glm::cross(worldUp, cameraDirection));
+		// glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);
+		view = camera.getViewMatrix();
+
+		//	model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
+
+		projection = glm::perspective(glm::radians(camera.zoom), (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 0.1f, 100.0f);
 
 		unsigned int modelLoc = glGetUniformLocation(shader.ID, "model");
 		unsigned int viewLoc = glGetUniformLocation(shader.ID, "view");
