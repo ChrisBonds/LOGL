@@ -8,6 +8,7 @@
 #include "WindowManager.hpp"
 //#include "ShaderResourceManager.hpp"
 #include "Shader.hpp"
+#include "Camera.hpp"
 #include "Texture.hpp"
 #include <unordered_map>
 #include <glm/glm.hpp>
@@ -34,6 +35,7 @@ int main() {
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback); //weird that this is legal
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glfwSetCursorPosCallback(window, mouse_callback);
+	glfwSetScrollCallback(window, scroll_callback);
 
 
 

@@ -31,9 +31,9 @@ void Camera::updateCameraVectors() {
 	glm::vec3 front = glm::normalize(glm::vec3(cos(glm::radians(yaw)) * cos(glm::radians(pitch)),
 											   sin(glm::radians(pitch)),
 											   sin(glm::radians(yaw)) * cos(glm::radians(pitch))));
+	//std::cout << "front : (" << front.x <<" , " << front.y << " , "<< front.z << ")\n\n";
 	right = glm::normalize(glm::cross(front, worldUp));
 	up = glm::normalize(glm::cross(right, front));
-
 }
 glm::mat4 Camera::getViewMatrix() {
 	return glm::lookAt(pos, pos + front, up);
@@ -53,13 +53,13 @@ void Camera::processKeyboard(CameraMovement dir, float dt) {
 		pos += right * v;
 	}
 }
-void Camera::processMouseMovement(float xoffset, float yoffset, GLboolean contrain_pitch) {
+void Camera::processMouseMovement(float xoffset, float yoffset, GLboolean constrain_pitch) {
 	xoffset *= mouseSensitivity;
 	yoffset *= mouseSensitivity;
 	yaw += xoffset;
 	pitch += yoffset;
 
-	if (contrain_pitch) {
+	if (constrain_pitch) {
 		if (pitch > 89.9f) {
 			pitch = 89.9f;
 		}

@@ -43,9 +43,12 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn){
     //  
     //  xoffset *= sensitivity;
     //  yoffset *= sensitivity;
-
+    //  std::cout << "mouse callback xoffset : " << xoffset << "\n";
+    //  std::cout << "mouse callback yoffset : " << yoffset << "\n\n\n";
+    std::cout <<"current cam, pitch" << Camera::getCurrentCamera().pitch << "\n";
+    std::cout <<"current cam, yaw" << Camera::getCurrentCamera().yaw << "\n\n";
     Camera::getCurrentCamera().processMouseMovement(xoffset, yoffset);
 }
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset){
-    Camera::getCurrentCamera().processMouseScroll(yoffset);
+    Camera::getCurrentCamera().processMouseScroll(static_cast<float>(yoffset));
 }
