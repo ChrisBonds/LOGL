@@ -28,10 +28,10 @@ Camera::Camera(float posX, float posY, float posZ, float upX, float upY, float u
 }
 //using euler 
 void Camera::updateCameraVectors() {
-	glm::vec3 front = glm::normalize(glm::vec3(cos(glm::radians(yaw)) * cos(glm::radians(pitch)),
-											   sin(glm::radians(pitch)),
-											   sin(glm::radians(yaw)) * cos(glm::radians(pitch))));
-	//std::cout << "front : (" << front.x <<" , " << front.y << " , "<< front.z << ")\n\n";
+	front = glm::normalize(glm::vec3(cos(glm::radians(yaw)) * cos(glm::radians(pitch)),
+									 sin(glm::radians(pitch)),
+									 sin(glm::radians(yaw)) * cos(glm::radians(pitch))));
+	//	std::cout << "front : (" << front.x <<" , " << front.y << " , "<< front.z << ")\n\n";
 	right = glm::normalize(glm::cross(front, worldUp));
 	up = glm::normalize(glm::cross(right, front));
 }
@@ -97,3 +97,12 @@ Camera::~Camera() {
 
 //have to define static memeber outside of class definition idk man 
 std::vector<Camera*> Camera::CAMERAS;
+
+//do a bunch of glm math helper functions by hand in a seperate file 
+glm::vec3 CameraRotationMatrix(float beta, float gamma, glm::vec3 v) {//R_x * R_y * v
+	glm::mat3 R = glm::mat3(
+		cos(glm::radians(beta)),  sin(glm::radians(beta)) * sin(glm::radians(gamma)), sin(glm::radians(beta)) * cos(glm::radians(gamma)),
+		0,						  cos(glm::radians(gamma)),							 -sin(glm::radians(gamma)),
+		-sin(glm::radians(beta)), cos(glm::radians(beta)) * sin(glm::radians(gamma)), cos(glm::radians(beta)) * cos(glm::radians(gamma)));
+	return glm::normalize(R * v);
+}
