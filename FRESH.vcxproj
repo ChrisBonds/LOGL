@@ -146,6 +146,7 @@
   <ItemGroup>
     <ClCompile Include="..\glad(4.6)\src\glad.c" />
     <ClCompile Include="include\structs\TextureInfo.hpp" />
+    <ClCompile Include="src\BufferObjectManager.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Shader.cpp" />

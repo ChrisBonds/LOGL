@@ -2,8 +2,8 @@
 #include "Camera.hpp"
 
 //does not to be its own class just yet
-int WINDOW_WIDTH = 1920;
-int WINDOW_HEIGHT = 1080;
+int WINDOW_WIDTH = 1920 * 1.5;
+int WINDOW_HEIGHT = 1080 * 1.5;
 float lastX = 400;
 float lastY = 300;
 float firstMouse = true;
