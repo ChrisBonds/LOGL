@@ -2,8 +2,8 @@
 #include "Camera.hpp"
 
 //does not to be its own class just yet
-int WINDOW_WIDTH = 800;
-int WINDOW_HEIGHT = 600;
+int WINDOW_WIDTH = 1920;
+int WINDOW_HEIGHT = 1080;
 float lastX = 400;
 float lastY = 300;
 float firstMouse = true;
@@ -19,12 +19,18 @@ void processInput(GLFWwindow* window, Camera& camera, float dt) {
         camera.processKeyboard(LEFT, dt);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.processKeyboard(RIGHT, dt);
+    if (glfwGetKey(window, GLFW_KEY_CAPS_LOCK) == GLFW_PRESS)
+        camera.processKeyboard(UP, dt);
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+        camera.processKeyboard(DOWN, dt);
+
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int w, int h) {
 	glViewport(0, 0, w, h);
 }
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn){
+    //mouse movement is not smooth enough 
     float xpos = static_cast<float>(xposIn);
     float ypos = static_cast<float>(yposIn);
 

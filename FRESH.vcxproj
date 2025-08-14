@@ -138,6 +138,8 @@
   <ItemGroup>
     <None Include=".gitignore" />
     <None Include="res\shaders\common\common.glsl" />
+    <None Include="res\shaders\OpenGL\basic_lighting.frag" />
+    <None Include="res\shaders\OpenGL\basic_lighting.vert" />
     <None Include="res\shaders\OpenGL\test.frag" />
     <None Include="res\shaders\OpenGL\test.vert" />
   </ItemGroup>
@@ -152,6 +154,7 @@
     <ClCompile Include="src\WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\BufferObjectManager.hpp" />
     <ClInclude Include="include\Camera.hpp" />
     <ClInclude Include="include\GL_Compatability\GL_chris.hpp" />
     <ClInclude Include="include\GL_Compatability\stb_image.h" />

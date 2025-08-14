@@ -50,6 +50,7 @@ int main() {
 	/*auto& shaderManagerRef = ShaderResourceManager::instance();
 	shaderManagerRef.loadProgram("OpenGL_triangle", R"(C:\Users\cwbon\Shaders\FRESH\res\shaders\OpenGL\test.vert)", R"(C:\Users\cwbon\Shaders\FRESH\res\shaders\OpenGL\test.frag)");
 	*/ 
+	// would like a global array of shader programs cuz imma start using differnt shader programs now
 	Shader shader(R"(C:\Users\cwbon\Shaders\FRESH\res\shaders\OpenGL\test.vert)", R"(C:\Users\cwbon\Shaders\FRESH\res\shaders\OpenGL\test.frag)");
 
 	//float vertices[] = {
@@ -219,8 +220,7 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-		//TODO : bindings in class
-
+		//TODO : bindings in class -> honestly not rly worth rn unless it gets more complex 
 		glActiveTexture(containerTexture.getInfo().unit);
 		glBindTexture(containerTexture.getInfo().textureDimension, containerTexture.getID());
 		glActiveTexture(epicTexture.getInfo().unit);
@@ -232,17 +232,8 @@ int main() {
 		shader.use();
 
 		glm::mat4 model = glm::mat4(1.0f);
-		glm::mat4 view = glm::mat4(1.0f);
+		glm::mat4 view = camera.getViewMatrix();
 		glm::mat4 projection = glm::mat4(1.0f);
-
-		glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
-		glm::vec3 cameraDirection = glm::normalize(camera.pos - cameraTarget);
-		glm::vec3 worldUp = glm::vec3(0.0f, 1.0f, 0.0f);
-		glm::vec3 cameraRight = glm::normalize(glm::cross(worldUp, cameraDirection));
-		// glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);
-		view = camera.getViewMatrix();
-
-		//	model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
 
 		projection = glm::perspective(glm::radians(camera.zoom), (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 0.1f, 100.0f);
 

@@ -2,6 +2,7 @@
 
 
 Shader::Shader(const char* vertex_path, const char* fragment_path) {
+	//huge ass constructor
 	std::unordered_set<std::string> vertIncludes;
 	std::unordered_set<std::string> fragIncludes;
 	std::string vertexCode;
@@ -26,8 +27,6 @@ Shader::Shader(const char* vertex_path, const char* fragment_path) {
 
 		vertexCode = preprocessGLSL(vertex_path, vertIncludes, true);
 		fragmentCode = preprocessGLSL(fragment_path, fragIncludes, true);
-
-
 	}
 	catch (std::ifstream::failure& e) {
 		std::cout << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ: " << e.what() << std::endl;

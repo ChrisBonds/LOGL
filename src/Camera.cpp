@@ -52,6 +52,12 @@ void Camera::processKeyboard(CameraMovement dir, float dt) {
 	else if (dir == RIGHT) {
 		pos += right * v;
 	}
+	else if (dir == UP) {
+		pos += up * v;
+	}
+	else if (dir == DOWN) {
+		pos -= up * v;
+	}
 }
 void Camera::processMouseMovement(float xoffset, float yoffset, GLboolean constrain_pitch) {
 	xoffset *= mouseSensitivity;

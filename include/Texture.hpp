@@ -17,6 +17,7 @@ public:
 
 	void bind(GLenum unit = GL_TEXTURE0)const;//bind to a specified texture slot per draw call.
 	void unbind()const;
+	void setActiveUnit()const;
 	GLuint getID()const;
 	TextureInfo getInfo()const;
 

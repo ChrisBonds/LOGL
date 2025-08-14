@@ -19,6 +19,7 @@ Texture::~Texture() {
 }
 
 void Texture::bind(GLenum unit) const{
+	glActiveTexture(unit);
 	glBindTexture(INFO_.textureDimension, ID_);
 
 	glTexParameteri(INFO_.textureDimension, GL_TEXTURE_WRAP_S, INFO_.wrapMode);
@@ -31,7 +32,9 @@ void Texture::bind(GLenum unit) const{
 void Texture::unbind() const{
 
 }
-
+void Texture::setActiveUnit() const{
+	glActiveTexture(INFO_.unit);
+}
 GLuint Texture::getID()const { return ID_; }
 TextureInfo Texture::getInfo()const { return INFO_; }
 

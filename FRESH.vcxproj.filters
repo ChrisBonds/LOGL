@@ -30,6 +30,8 @@
     <None Include="res\shaders\OpenGL\test.vert" />
     <None Include=".gitignore" />
     <None Include="res\shaders\OpenGL\test.frag" />
+    <None Include="res\shaders\OpenGL\basic_lighting.vert" />
+    <None Include="res\shaders\OpenGL\basic_lighting.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -77,6 +79,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Camera.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\BufferObjectManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
