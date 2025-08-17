@@ -6,7 +6,7 @@
 #include <iostream>
 #include <filesystem>
 #include "WindowManager.hpp"
-//#include "ShaderResourceManager.hpp"
+//#include "ShaderManager.hpp"
 #include "Shader.hpp"
 #include "Camera.hpp"
 #include "Texture.hpp"
@@ -18,7 +18,7 @@
 
 int main() {
 
-	//initialize glfw and window
+	//init backend w/ glfw, glad and window
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
@@ -31,36 +31,31 @@ int main() {
 		return -1;
 	}
 	glfwMakeContextCurrent(window);
-	//have to init
-	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback); //weird that this is legal
+	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glfwSetCursorPosCallback(window, mouse_callback);
 	glfwSetScrollCallback(window, scroll_callback);
 
-
-
-	//load glad opengl function pointers 
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) { //have to cast glfw process to glad process i wonder how that works
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) { 
 		std::cout << "failed to initialize GLAD" << std::endl;
 		return -2;
 	}
-	glEnable(GL_DEPTH_TEST);
-	//compile shaders here 
 
-	/*auto& shaderManagerRef = ShaderResourceManager::instance();
+
+	//config openGL state
+	glEnable(GL_DEPTH_TEST);
+
+
+	//init shaders
+
+	/*auto& shaderManagerRef = ShaderManager::instance();
 	shaderManagerRef.loadProgram("OpenGL_triangle", R"(C:\Users\cwbon\Shaders\FRESH\res\shaders\OpenGL\test.vert)", R"(C:\Users\cwbon\Shaders\FRESH\res\shaders\OpenGL\test.frag)");
 	*/ 
 	// would like a global array of shader programs cuz imma start using differnt shader programs now
 	Shader shader(R"(C:\Users\cwbon\Shaders\FRESH\res\shaders\OpenGL\test.vert)", R"(C:\Users\cwbon\Shaders\FRESH\res\shaders\OpenGL\test.frag)");
 
-	//float vertices[] = {
-	//	// positions          // colors           // texture coords
-	//	 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
-	//	 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
-	//	-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
-	//	-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left 
-	//};
 
+	//add primitives? maybe after models n such
 	float vertices[] = {
 	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 	 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
@@ -110,7 +105,7 @@ int main() {
 		1,2,3
 	};
 
-	glm::vec3 cubePositions[] = {
+	glm::vec3 cubePositions[] = { //belongs in Renderer
 		glm::vec3(0.0f, 0.0f, 0.0f),
 		glm::vec3(2.0f, 5.0f, -15.0f),
 		glm::vec3(-1.5f, -2.2f, -2.5f),
@@ -124,6 +119,8 @@ int main() {
 	};
 
 	//buffer class fo shizzle 
+	// call some shit like Buffers::configureBuffers()? but then what buffers am i configuring 
+	// handling buffers explicitly outside the objects they define seems weird they shouldnt all be configured in the same place they should be associated with each object they define 
 	//so much shit here
 	//	unsigned int VBO, VAO;
 	//	unsigned int EBO;
@@ -132,7 +129,7 @@ int main() {
 	//	//glGenBuffers(1, &EBO);
 	//	glBindVertexArray(VAO);
 	//	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	//	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	//	glBufferData(GL_ ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 	//	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	//	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 	//	
@@ -164,18 +161,16 @@ int main() {
 	// uncomment this call to draw in wireframe polygons.
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	
-	//init textures here 
-	std::unordered_map<std::filesystem::path, GLuint> textureCache;
 
-	TextureInfo containerTextureInfo(std::filesystem::path(R"(C:\Users\cwbon\Shaders\FRESH\res\textures\container.jpg)"), GL_TEXTURE0);
-	//TextureInfo(R"(C:\Users\cwbon\Shaders\FRESH\res\textures\container.jpg)");
-	Texture containerTexture(containerTextureInfo);
-	//Texture epicTexture(R"(C:\Users\cwbon\Shaders\FRESH\res\textures\awesomeface.png)");
-	TextureInfo epicTextureInfo(std::filesystem::path(R"(C:\Users\cwbon\Shaders\FRESH\res\textures\awesomeface.png)"), GL_TEXTURE1, GL_RGBA);
-	Texture epicTexture(epicTextureInfo);
-	TextureInfo joshTextureInfo(std::filesystem::path(R"(C:\Users\cwbon\Shaders\FRESH\res\textures\josh.png)"), GL_TEXTURE2, GL_RGBA);
-	Texture joshTexture(joshTextureInfo);
-
+	//init textures here, could do all the manipulation in a seperate space and just call them for use here cuz main should really just be calling everything associated with the renderloop 
+	std::unordered_map<std::filesystem::path, GLuint*> textureCache;
+	//	TextureInfo containerTextureInfo(std::filesystem::path(R"(C:\Users\cwbon\Shaders\FRESH\res\textures// \container.jpg)"), GL_TEXTURE0);
+	//	Texture containerTexture(containerTextureInfo);
+	//	TextureInfo epicTextureInfo(std::filesystem::path(R"(C:\Users\cwbon\Shaders\FRESH\res\textures//  \awesomeface.png)"), GL_TEXTURE1, GL_RGBA);
+	//	Texture epicTexture(epicTextureInfo);
+	//	TextureInfo joshTextureInfo(std::filesystem::path(R"(C:\Users\cwbon\Shaders\FRESH\res\textures/   \josh.png)"), /GL_TEXTURE2, GL_RGBA);
+	//	Texture joshTexture(joshTextureInfo);
+	//	
 	shader.use();
 	shader.setInt("texture1", 0);
 	shader.setInt("texture2", 1);
@@ -202,13 +197,14 @@ int main() {
 //		glm::mat4 projection;
 //		projection = glm::perspective(glm::radians(42.0f), (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 0.1f, 100.0f);
 
+
+	// Renderer::startRenderLoop()
 	//glm::vec3 CAMERA_POS= glm::vec3(0.0f, 0.0f, 3.0f);
 	const float radius = 10.0f;
 	Camera camera(glm::vec3(0.0f, 0.0f, -3.0f));
 	float dt = 0.0;
 	float lastFrame = 0.0;
 	float currentFrame;
-
 	//render loop
 	while (!glfwWindowShouldClose(window)) {
 		currentFrame = static_cast<float>(glfwGetTime());
@@ -272,6 +268,8 @@ int main() {
 		glfwPollEvents();
 	}
 
+
+	// some sort of global resource cleaner would be convenient but probably not right 
 	// optional: de-allocate all resources once they've outlived their purpose:
 // ------------------------------------------------------------------------
 	glDeleteVertexArrays(1, &VAO);

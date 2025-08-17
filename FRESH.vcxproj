@@ -145,23 +145,28 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\glad(4.6)\src\glad.c" />
-    <ClCompile Include="include\structs\TextureInfo.hpp" />
-    <ClCompile Include="src\BufferObjectManager.cpp" />
+    <ClCompile Include="include\Types\TextureInfo.hpp" />
+    <ClCompile Include="src\Buffers.cpp" />
     <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\Lighting.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Shader.cpp" />
-    <ClCompile Include="src\ShaderResourceManager.cpp" />
+    <ClCompile Include="src\ShaderManager.cpp" />
     <ClCompile Include="src\Texture.cpp" />
+    <ClCompile Include="src\Types\BufferTypes.cpp" />
+    <ClCompile Include="src\Types\Models.cpp" />
     <ClCompile Include="src\WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\BufferObjectManager.hpp" />
+    <ClInclude Include="include\Buffers.hpp" />
     <ClInclude Include="include\Camera.hpp" />
     <ClInclude Include="include\GL_Compatability\GL_chris.hpp" />
     <ClInclude Include="include\GL_Compatability\stb_image.h" />
+    <ClInclude Include="include\Models.hpp" />
     <ClInclude Include="include\Shader.hpp" />
-    <ClInclude Include="include\ShaderResourceManager.hpp" />
+    <ClInclude Include="include\ShaderManager.hpp" />
     <ClInclude Include="include\Texture.hpp" />
+    <ClInclude Include="include\Types\BufferTypes.hpp" />
     <ClInclude Include="include\WindowManager.hpp" />
   </ItemGroup>
   <ItemGroup>

@@ -14,11 +14,11 @@ struct ShaderProgram {
 	// Add more fields if needed, like uniform locations, etc.
 };
 
-class ShaderResourceManager {
+class ShaderManager {
 public:
-	static ShaderResourceManager& instance();
-	ShaderResourceManager(const ShaderResourceManager&) = delete; //do not allow copy constructor for singletons
-	ShaderResourceManager& operator=(const ShaderResourceManager&) = delete; //delete copy assignment which is basically the same thing 
+	static ShaderManager& instance();
+	ShaderManager(const ShaderManager&) = delete; //do not allow copy constructor for singletons
+	ShaderManager& operator=(const ShaderManager&) = delete; //delete copy assignment which is basically the same thing 
 
 	void loadProgram(const std::string& name,
 							   const std::string& vert_path,
@@ -27,8 +27,8 @@ public:
 	ShaderProgram& getProgram(const std::string& name);
 
 private:
-	ShaderResourceManager() = default;
-	~ShaderResourceManager();
+	ShaderManager() = default;
+	~ShaderManager();
 
 	std::unordered_map<std::string, ShaderProgram> programs_;
 

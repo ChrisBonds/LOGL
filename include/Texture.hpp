@@ -2,7 +2,7 @@
 #include <glad/glad.h>
 #include <filesystem>
 #include <iostream>
-#include "structs/TextureInfo.hpp"
+#include "Types/TextureInfo.hpp"
 //texture can be a single instance and textures can manage the array of textures? j
 
 //prolly gonna be a big guy theres lots of cool texturing stuff to do

@@ -1,4 +1,4 @@
-#include "ShaderResourceManager.hpp"
+#include "ShaderManager.hpp"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <stdexcept>
@@ -7,25 +7,25 @@
 #include <string>
 
 //singleton constructor
-ShaderResourceManager& ShaderResourceManager::instance() {
-	static ShaderResourceManager instance;
+ShaderManager& ShaderManager::instance() {
+	static ShaderManager instance;
 	return instance;
 }
 
-ShaderResourceManager::~ShaderResourceManager() {
+ShaderManager::~ShaderManager() {
 	for (auto& entry : programs_) {
 		if (entry.second.id) glDeleteProgram(entry.second.id);
 	}
 }
 
-ShaderProgram& ShaderResourceManager::getProgram(const std::string& name) {
+ShaderProgram& ShaderManager::getProgram(const std::string& name) {
 	auto it = programs_.find(name);
 	if (it == programs_.end()) throw std::runtime_error("couldnt get program : " + name);
 	return it->second;
 }
 
 //lowk this doesnt need to return anything if it just loads to programs_ cuz i can just call getter 
-void ShaderResourceManager::loadProgram(
+void ShaderManager::loadProgram(
 	const std::string& name,
 	const std::string& vert_path,
 	const std::string& frag_path) 
@@ -54,7 +54,7 @@ void ShaderResourceManager::loadProgram(
 //just gonna put the set before i call the function so i have a map of includes per shader object 
 //also will need 1 set per file not per object
 //should also include checking for correct file extension
-std::string ShaderResourceManager::preprocessGLSL(
+std::string ShaderManager::preprocessGLSL(
 	const std::string& file_path,
 	std::unordered_set<std::string>& seen_includes, bool is_root_file)
 {
@@ -96,7 +96,7 @@ std::string ShaderResourceManager::preprocessGLSL(
 	//maybe do it here instead of compile shader
 }
 
-GLuint ShaderResourceManager::compileShader(GLenum type, const std::string& source) {
+GLuint ShaderManager::compileShader(GLenum type, const std::string& source) {
 	GLuint shader = glCreateShader(type);
 	/*std::cout << "glCreateShader ptr: " << (void*)glCreateShader << std::endl;
 	std::cout << "Compiling shader:\n" << source << "\n---" << std::endl;
@@ -133,7 +133,7 @@ GLuint ShaderResourceManager::compileShader(GLenum type, const std::string& sour
 	return shader;
 }
 
-ShaderProgram ShaderResourceManager::linkProgram(GLuint vert_shader, GLuint frag_shader) {
+ShaderProgram ShaderManager::linkProgram(GLuint vert_shader, GLuint frag_shader) {
 	GLuint program = glCreateProgram();
 	glAttachShader(program, vert_shader);
 	glAttachShader(program, frag_shader);
