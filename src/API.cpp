@@ -6,12 +6,10 @@
 #include <iostream>
 
 namespace API { //wrap everything into this
-	void destroyEverything() {
-        std::unordered_map<std::string, GLuint> buffers = Buffers::getBuffers();
-		std::cout << buffers.at("VAO") << std::endl;
-		glDeleteVertexArrays(1, &buffers.at("VAO"));
-		glDeleteBuffers(1, & buffers.at("VBO"));
-		glDeleteBuffers(1, & buffers.at("EBO"));
+	void DestroyEverything() {
+		glDeleteVertexArrays(1, &Buffers::g_buffers.at("VAO"));
+		glDeleteBuffers(1, &Buffers::g_buffers.at("VBO"));
+		glDeleteBuffers(1, &Buffers::g_buffers.at("EBO"));
 		
 		glfwTerminate();
 	}

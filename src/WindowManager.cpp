@@ -9,21 +9,34 @@ float lastY = 300;
 float firstMouse = true;
 
 void processInput(GLFWwindow* window, Camera& camera, float dt) {
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+        //std::cout << "ESC PRESSED" << std::endl;
         glfwSetWindowShouldClose(window, true);
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+    }
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+        //std::cout << "FORWARD PRESSED" << std::endl;
         camera.processKeyboard(FORWARD, dt);
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+    }
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+        //std::cout << "BACK PRESSED" << std::endl;
         camera.processKeyboard(BACKWARD, dt);
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+    }
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+        //std::cout << "LEFT PRESSED" << std::endl;
         camera.processKeyboard(LEFT, dt);
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+    }
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+        //std::cout << "RIGHT PRESSED" << std::endl;
         camera.processKeyboard(RIGHT, dt);
-    if (glfwGetKey(window, GLFW_KEY_CAPS_LOCK) == GLFW_PRESS)
+    }
+    if (glfwGetKey(window, GLFW_KEY_CAPS_LOCK) == GLFW_PRESS) {
+        //std::cout << "UP PRESSED" << std::endl;
         camera.processKeyboard(UP, dt);
-    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+    }
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+        //std::cout << "DOWN PRESSED" << std::endl;
         camera.processKeyboard(DOWN, dt);
-
+    }
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int w, int h) {

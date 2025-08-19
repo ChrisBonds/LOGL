@@ -13,9 +13,10 @@
 #include <glm/gtc/type_ptr.hpp>
 
 //shaders namespace to iterate on shape of shaders in program
+//really starting not not like the design of this guy
 class Shader {
 public:
-	unsigned int ID;
+	GLuint ID;
 
 	Shader(const char* vertex_path, const char* fragment_path);
 

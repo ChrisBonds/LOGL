@@ -1,3 +1,4 @@
+#pragma once
 #include <string>
 #include <glad/glad.h>
 
@@ -25,7 +26,8 @@ struct VAO { //init first
 	GLuint id;
 	unsigned int BindingPoint = 0;
 
-	void Init(std::string name = "default");
+	void Init(std::string name = "VAO");
+	void bind();
 };
 struct VBO { //init second 
 	std::string Name; //	?
@@ -34,16 +36,16 @@ struct VBO { //init second
 	unsigned int Stride;
 	//GLsizeiptr Capacity;
 
-	void Init(const void* data, unsigned int stride, GLenum usage = GL_STATIC_DRAW, std::string name = "default");
+	void Init(const void* data, GLsizeiptr size, unsigned int stride, std::string name = "VBO", GLenum usage = GL_STATIC_DRAW);
 	//void setData(const void* data, GLsizeiptr bytes, GLenum usage = GL_STATIC_DRAW);
 	//void destroy();
 };
 struct EBO { //init third 
 	std::string Name;
 	GLuint id;
-	GLsizeiptr Size = 0;
+	GLsizeiptr Size;
 
-	void Init(const void* data, std::string name = "default");
+	void Init(const void* data, GLsizeiptr size, std::string name = "EBO");
 	//void setData();
 	//void destroy();
 };

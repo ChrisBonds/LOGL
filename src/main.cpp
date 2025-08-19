@@ -16,6 +16,8 @@
 #include "Shaders.hpp"
 //	if you are reading this welcome to the mess
 #include "API.hpp"
+#include "Renderer.hpp"
+#include "Buffers.hpp"
 
 
 int main() {
@@ -47,6 +49,7 @@ int main() {
 	glEnable(GL_DEPTH_TEST);
 
 	//init shaders
+	Buffers::configureBuffers(); //took me so long to realize this never got called 
 	Shaders::initShaders();
 	/*auto& shaderManagerRef = ShaderManager::instance();
 	shaderManagerRef.loadProgram("OpenGL_triangle", R"(C:\Users\cwbon\Shaders\FRESH\res\shaders\OpenGL\test.vert)", R"(C:\Users\cwbon\Shaders\FRESH\res\shaders\OpenGL\test.frag)");
@@ -119,7 +122,7 @@ int main() {
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		//	Renderer::iterate all the things i want to render
+		Renderer::Update();
 		//	Textures::activateTextures for this thing i am trying to render
 		/*glActiveTexture(containerTexture.getInfo().unit);
 		glBindTexture(containerTexture.getInfo().textureDimension, containerTexture.getID());
@@ -127,18 +130,6 @@ int main() {
 		glBindTexture(epicTexture.getInfo().textureDimension, epicTexture.getID());
 		glActiveTexture(joshTexture.getInfo().unit);
 		glBindTexture(joshTexture.getInfo().textureDimension, joshTexture.getID());*/
-		glm::mat4 model = glm::mat4(1.0f);
-		glm::mat4 view = camera.getViewMatrix();
-		glm::mat4 projection = glm::mat4(1.0f);
-
-		projection = glm::perspective(glm::radians(camera.zoom), (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 0.1f, 100.0f);
-
-		unsigned int modelLoc = glGetUniformLocation(shader.ID, "model");
-		unsigned int viewLoc = glGetUniformLocation(shader.ID, "view");
-		unsigned int projectionLoc = glGetUniformLocation(shader.ID, "projection");    // note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
-		shader.setMat4("model", model);
-		shader.setMat4("view", view);
-		shader.setMat4("projection", projection);
 
 		//manipulating color with time 
 
@@ -172,4 +163,5 @@ int main() {
 	}
 	//	Renderer::cleanupBackend or some shit more diverse than just cleanupBuffers
 	API::DestroyEverything();
+	return 0;
 }

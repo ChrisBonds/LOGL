@@ -145,7 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\glad(4.6)\src\glad.c" />
-    <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\API.cpp" />
     <ClCompile Include="include\Types\TextureInfo.hpp" />
     <ClCompile Include="src\Buffers.cpp" />
@@ -157,7 +157,6 @@
     <ClCompile Include="src\Shaders.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\Types\BufferTypes.cpp" />
-    <ClCompile Include="src\Models.cpp" />
     <ClCompile Include="src\WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -166,7 +165,7 @@
     <ClInclude Include="include\Camera.hpp" />
     <ClInclude Include="include\GL_Compatability\GL_chris.hpp" />
     <ClInclude Include="include\GL_Compatability\stb_image.h" />
-    <ClInclude Include="include\Models.hpp" />
+    <ClInclude Include="include\Renderer.hpp" />
     <ClInclude Include="include\Shader.hpp" />
     <ClInclude Include="include\ShaderManager.hpp" />
     <ClInclude Include="include\Shaders.hpp" />

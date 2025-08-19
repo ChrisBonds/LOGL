@@ -31,7 +31,7 @@ void Camera::updateCameraVectors() {
 	front = glm::normalize(glm::vec3(cos(glm::radians(yaw)) * cos(glm::radians(pitch)),
 									 sin(glm::radians(pitch)),
 									 sin(glm::radians(yaw)) * cos(glm::radians(pitch))));
-	//	std::cout << "front : (" << front.x <<" , " << front.y << " , "<< front.z << ")\n\n";
+	std::cout << "front : (" << front.x <<" , " << front.y << " , "<< front.z << ")\n\n";
 	right = glm::normalize(glm::cross(front, worldUp));
 	up = glm::normalize(glm::cross(right, front));
 }
