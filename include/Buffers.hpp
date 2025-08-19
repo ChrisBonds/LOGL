@@ -5,7 +5,7 @@
 
 //will need to interact with models n such
 namespace Buffers {
-	std::unordered_map<std::string, GLuint*> g_buffers;
+	std::unordered_map<std::string, GLuint> g_buffers;
 
 	void configureBuffers(); //misc initial implementation shit thatll change a lot
 	
@@ -14,4 +14,5 @@ namespace Buffers {
 	void unbind();
 	void destroy();
 	void setData(const void* data, GLsizeiptr bytes, GLenum usage = GL_STATIC_DRAW);
+	std::unordered_map<std::string, GLuint> getBuffers(); //wont let me return a reference
 }

@@ -22,24 +22,26 @@
 
 struct VAO { //init first 
 	std::string Name;
-	GLuint VAOid = 0;
+	GLuint id;
+	unsigned int BindingPoint = 0;
 
 	void Init(std::string name = "default");
 };
 struct VBO { //init second 
 	std::string Name; //	?
-	GLuint VBOid = 0;
-	GLsizeiptr Size;
+	GLuint id;
+	GLsizeiptr Size = 0;
+	unsigned int Stride;
 	//GLsizeiptr Capacity;
 
-	void Init(const void* data, GLenum usage = GL_STATIC_DRAW, std::string name = "default");
+	void Init(const void* data, unsigned int stride, GLenum usage = GL_STATIC_DRAW, std::string name = "default");
 	//void setData(const void* data, GLsizeiptr bytes, GLenum usage = GL_STATIC_DRAW);
 	//void destroy();
 };
 struct EBO { //init third 
 	std::string Name;
-	GLuint EBOid = 0;
-	GLsizeiptr Size;
+	GLuint id;
+	GLsizeiptr Size = 0;
 
 	void Init(const void* data, std::string name = "default");
 	//void setData();

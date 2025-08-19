@@ -12,7 +12,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-
+//shaders namespace to iterate on shape of shaders in program
 class Shader {
 public:
 	unsigned int ID;

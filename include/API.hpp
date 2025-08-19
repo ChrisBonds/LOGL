@@ -1,0 +1,3 @@
+namespace API {
+	void DestroyEverything();
+}

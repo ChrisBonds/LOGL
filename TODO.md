@@ -12,3 +12,5 @@ Textures
 
 Buffers 
     dont rlly need to work in here until i do model importing then good to configure standard buffers 
+
+SSBO

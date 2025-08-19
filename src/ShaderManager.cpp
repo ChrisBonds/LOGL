@@ -6,7 +6,7 @@
 #include <vector>
 #include <string>
 
-//singleton constructor
+//this is basically my ssbo right i need to do some mr researching
 ShaderManager& ShaderManager::instance() {
 	static ShaderManager instance;
 	return instance;
