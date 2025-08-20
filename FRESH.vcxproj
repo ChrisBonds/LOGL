@@ -137,6 +137,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include=".gitignore" />
+    <None Include="res\shaders\OpenGL\basic_light_cube.frag" />
+    <None Include="res\shaders\OpenGL\basic_light_cube.vert" />
     <None Include="res\shaders\OpenGL\common.glsl" />
     <None Include="res\shaders\OpenGL\basic_lighting.frag" />
     <None Include="res\shaders\OpenGL\basic_lighting.vert" />

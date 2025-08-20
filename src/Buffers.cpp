@@ -23,25 +23,38 @@ namespace Buffers {
 		5,1,2, 2,6,5  // right
 	};
 	void configureBuffers() { //invalid draw issue has to be here right?  
-		VAO vao;
+		VAO cubevao;
+		VAO lightCubevao;
 		VBO vbo;
 		EBO ebo;
-		vao.Init("VAO");
+		cubevao.Init("cubeVAO");
+		lightCubevao.Init("lightCubeVAO");
 		vbo.Init(cubeVertices, sizeof(cubeVertices), 5 * sizeof(float), "VBO");
 		ebo.Init(cubeIndices, sizeof(cubeIndices), "EBO");
 
 		//bind ebo to vbo
-		glVertexArrayVertexBuffer(vao.id, 0, vbo.id, 0, vbo.Stride);
-		glVertexArrayElementBuffer(vao.id, ebo.id);
+		glVertexArrayVertexBuffer(cubevao.id, 0, vbo.id, 0, vbo.Stride);
+		glVertexArrayElementBuffer(cubevao.id, ebo.id);
 
 		//position location = 0
-		glEnableVertexArrayAttrib(vao.id, 0);
-		glVertexArrayAttribFormat(vao.id, 0, 3, GL_FLOAT, GL_FALSE, 0);
-		glVertexArrayAttribBinding(vao.id, 0, 0);
+		glEnableVertexArrayAttrib(cubevao.id, 0);
+		glVertexArrayAttribFormat(cubevao.id, 0, 3, GL_FLOAT, GL_FALSE, 0);
+		glVertexArrayAttribBinding(cubevao.id, 0, 0);
 		// 	glEnableVertexAttribArray(0); ?
 		//texcoord location = 1
-		glEnableVertexArrayAttrib(vao.id, 1);
-		glVertexArrayAttribFormat(vao.id, 1, 2, GL_FLOAT, GL_FALSE, 3 * sizeof(float));
-		glVertexArrayAttribBinding(vao.id, 1, 0); 	
+		glEnableVertexArrayAttrib(cubevao.id, 1);
+		glVertexArrayAttribFormat(cubevao.id, 1, 2, GL_FLOAT, GL_FALSE, 3 * sizeof(float));
+		glVertexArrayAttribBinding(cubevao.id, 1, 0); 	
+
+		//vertex attributes for lightcubeVAO
+		glVertexArrayVertexBuffer(lightCubevao.id, 0, vbo.id, 0, vbo.Stride);
+		glVertexArrayElementBuffer(lightCubevao.id, ebo.id);
+
+		glEnableVertexArrayAttrib(lightCubevao.id, 0);
+		glVertexArrayAttribFormat(lightCubevao.id, 0, 3, GL_FLOAT, GL_FALSE, 0);
+		glVertexArrayAttribBinding(lightCubevao.id, 0, 0);
+		glEnableVertexArrayAttrib(lightCubevao.id, 1);
+		glVertexArrayAttribFormat(lightCubevao.id, 1, 2, GL_FLOAT, GL_FALSE, 3 * sizeof(float));
+		glVertexArrayAttribBinding(lightCubevao.id, 1, 0);
 	}
 };

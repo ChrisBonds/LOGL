@@ -32,6 +32,8 @@
     <None Include="res\shaders\OpenGL\test.frag" />
     <None Include="res\shaders\OpenGL\basic_lighting.vert" />
     <None Include="res\shaders\OpenGL\basic_lighting.frag" />
+    <None Include="res\shaders\OpenGL\basic_light_cube.frag" />
+    <None Include="res\shaders\OpenGL\basic_light_cube.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">

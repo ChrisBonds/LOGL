@@ -7,6 +7,7 @@
 
 namespace Renderer {
 	void Update() {
+		glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 		//TODO DRAW A BASIC TRIANGLE SO I CAN CHECK IF I FUCKED MY BUFFERS UP
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
@@ -33,7 +34,20 @@ namespace Renderer {
 		BasicLighting->setMat4("projection", projection);
 		//BasicLighting.setMat4("projection", projection);
 
-		glBindVertexArray(Buffers::g_buffers["VAO"]);
+		glBindVertexArray(Buffers::g_buffers["cubeVAO"]);
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+		//now draw lamp first try	
+		auto& LightCube = Shaders::g_Shaders["basic_light_cube"];
+		LightCube->use();
+		LightCube->setMat4("projection", projection);
+		LightCube->setMat4("view", view);
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, lightPos);
+		model = glm::scale(model, glm::vec3(0.2f));
+		LightCube->setMat4("model", model);
+
+		glBindVertexArray(Buffers::g_buffers["lightCubeVAO"]);
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	}
 }

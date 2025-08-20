@@ -7,7 +7,7 @@
 
 namespace API { //wrap everything into this
 	void DestroyEverything() {
-		glDeleteVertexArrays(1, &Buffers::g_buffers["VAO"]);
+		glDeleteVertexArrays(1, &Buffers::g_buffers["cubeVAO"]);
 		glDeleteBuffers(1, &Buffers::g_buffers["VBO"]);
 		glDeleteBuffers(1, &Buffers::g_buffers["EBO"]);
 		

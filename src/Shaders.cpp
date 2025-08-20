@@ -13,8 +13,9 @@ namespace Shaders {
 		//Shader BasicLighting("basic_lighting.vert", "basic_lighting.frag", (std::string)"basic_lighting"); //goofy ah
 
 		g_Shaders["basic_lighting"] = std::make_unique<Shader>("basic_lighting.vert", "basic_lighting.frag");
-		auto& BasicLighting = g_Shaders["basic_lighting"];
-		BasicLighting->use();
+		g_Shaders["basic_light_cube"] = std::make_unique<Shader>("basic_light_cube.vert", "basic_light_cube.frag");
+		//auto& BasicLighting = g_Shaders["basic_lighting"];
+		//BasicLighting->use();
 		//glm::mat4 model = glm::mat4(1.0f);
 		//glm::mat4 view = Camera::getCurrentCamera().getViewMatrix();//please work
 		/*glm::mat4 projection = glm::mat4(1.0f);
