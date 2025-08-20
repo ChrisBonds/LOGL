@@ -1,7 +1,8 @@
 #include "Shader.hpp"
+#include "Shaders.hpp"
 
 
-Shader::Shader(const char* vertex_path, const char* fragment_path) {
+Shader::Shader(const char* vertex_path, const char* fragment_path, std::string name) {
 	//huge ass constructor
 	std::unordered_set<std::string> vertIncludes;
 	std::unordered_set<std::string> fragIncludes;
@@ -95,12 +96,19 @@ std::string Shader::preprocessGLSL(
 	std::unordered_set<std::string>& seen_includes, bool is_root_file)
 {
 	//replace backslashed with forward slashed so GLSL doesn't process as escape
-	std::string fixedPath = file_path;
+	//std::string fixedPath = file_path;
+	std::filesystem::path path(file_path);
+	if (!path.is_absolute()) {
+		path = shaderBaseDir / path;
+	}
+	path = std::filesystem::weakly_canonical(path);
+	std::string fixedPath = path.string();
 	std::replace(fixedPath.begin(), fixedPath.end(), '\\', '/');
 
-	if (seen_includes.count(file_path)) return ""; //if we have already processed this include
-	seen_includes.insert(file_path);
-	std::ifstream file(file_path);
+	if (seen_includes.count(fixedPath)) return "";
+	seen_includes.insert(fixedPath);
+
+	std::ifstream file(path);
 	if (!file.is_open()) throw std::runtime_error("Cannot open file : " + file_path);
 
 	std::stringstream body;

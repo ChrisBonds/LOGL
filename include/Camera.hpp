@@ -46,7 +46,7 @@ public:
 		float Pitch = PITCH);
 	// construct w/ floats
 	Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch);
-	~Camera();
+	//~Camera();
 	glm::mat4 getViewMatrix();
 	void processKeyboard(CameraMovement dir, float dt);
 	void processMouseMovement(float xoffset, float yoffset, GLboolean constrain_pitch = true);

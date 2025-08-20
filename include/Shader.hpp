@@ -17,8 +17,9 @@
 class Shader {
 public:
 	GLuint ID;
+	static inline std::filesystem::path shaderBaseDir = R"(res\shaders\OpenGL)";
 
-	Shader(const char* vertex_path, const char* fragment_path);
+	Shader(const char* vertex_path, const char* fragment_path, std::string name);
 
 	void use();
 
@@ -28,8 +29,8 @@ public:
 	void setMat4(const std::string& name, glm::mat4 val)const;
 
 private:
-	void checkCompileErrors(GLint shader, std::string type);
-	std::string preprocessGLSL(const std::string& file_path,
+	static void checkCompileErrors(GLint shader, std::string type);
+	static std::string preprocessGLSL(const std::string& file_path,
 							   std::unordered_set<std::string>& seen_includes,
 							   bool is_root_file);
 };

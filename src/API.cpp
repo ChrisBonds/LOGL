@@ -6,10 +6,11 @@
 #include <iostream>
 
 namespace API { //wrap everything into this
+	//TODO MEMORY LEAK
 	void DestroyEverything() {
-		glDeleteVertexArrays(1, &Buffers::g_buffers.at("VAO"));
-		glDeleteBuffers(1, &Buffers::g_buffers.at("VBO"));
-		glDeleteBuffers(1, &Buffers::g_buffers.at("EBO"));
+		glDeleteVertexArrays(1, &Buffers::g_buffers["VAO"]);
+		glDeleteBuffers(1, &Buffers::g_buffers["VBO"]);
+		glDeleteBuffers(1, &Buffers::g_buffers["EBO"]);
 		
 		glfwTerminate();
 	}

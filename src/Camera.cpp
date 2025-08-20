@@ -93,13 +93,13 @@ Camera& Camera::getCurrentCamera() {
 	//could have different cameras for different debug views
 	return *CAMERAS.front(); //only one camera for now
 }
-Camera::~Camera() {
-	//need a proper destructor (for list of cameras) 
-	auto it = std::find(CAMERAS.begin(), CAMERAS.end(), this);
-	if (it != CAMERAS.end()) {
-		CAMERAS.erase(it);
-	}
-}
+//Camera::~Camera() {
+//	//need a proper destructor (for list of cameras) 
+//	auto it = std::find(CAMERAS.begin(), CAMERAS.end(), this);
+//	if (it != CAMERAS.end()) {
+//		CAMERAS.erase(it);
+//	}
+//}
 
 //have to define static memeber outside of class definition idk man 
 std::vector<Camera*> Camera::CAMERAS;
