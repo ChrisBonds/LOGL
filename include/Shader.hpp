@@ -19,7 +19,7 @@ public:
 	GLuint ID;
 	static inline std::filesystem::path shaderBaseDir = R"(res\shaders\OpenGL)";
 
-	Shader(const char* vertex_path, const char* fragment_path, std::string name);
+	Shader(const char* vertex_path, const char* fragment_path);
 
 	void use();
 
@@ -27,6 +27,7 @@ public:
 	void setInt(const std::string& name, int val) const;
 	void setFloat(const std::string& name, float val) const;
 	void setMat4(const std::string& name, glm::mat4 val)const;
+	void setVec3(const std::string& name, glm::vec3 val)const;
 
 private:
 	static void checkCompileErrors(GLint shader, std::string type);

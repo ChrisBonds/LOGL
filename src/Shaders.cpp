@@ -12,24 +12,25 @@ namespace Shaders {
 		//Shader BasicLighting(R"(C:\Users\cwbon\Shaders\FRESH\res\shaders\OpenGL\basic_lighting.vert)", R"(C:\Users\cwbon\Shaders\FRESH\res\shaders\OpenGL\basic_lighting.frag)", "basic_lighting");
 		//Shader BasicLighting("basic_lighting.vert", "basic_lighting.frag", (std::string)"basic_lighting"); //goofy ah
 
-		g_Shaders["basic_lighting"] = std::make_unique<Shader>("basic_lighting.vert", "basic_lighting.frag",(std::string)"basic_lighting");
+		g_Shaders["basic_lighting"] = std::make_unique<Shader>("basic_lighting.vert", "basic_lighting.frag");
 		auto& BasicLighting = g_Shaders["basic_lighting"];
 		BasicLighting->use();
 		//glm::mat4 model = glm::mat4(1.0f);
 		//glm::mat4 view = Camera::getCurrentCamera().getViewMatrix();//please work
-		glm::mat4 projection = glm::mat4(1.0f);
+		/*glm::mat4 projection = glm::mat4(1.0f);
 		projection = glm::perspective(
 			glm::radians(Camera::getCurrentCamera().zoom),
 			(float)WINDOW_WIDTH / (float)WINDOW_HEIGHT,
 			0.1f,
-			100.0f);
+			100.0f);*/
 
 		//unsigned int modelLoc = glGetUniformLocation(BasicLighting.ID, "model");
 		//unsigned int viewLoc = glGetUniformLocation(BasicLighting.ID, "view");
-		unsigned int projectionLoc = glGetUniformLocation(BasicLighting->ID, "projection"); //doesnt need to be called every frame but leaving here for now
+		//unsigned int projectionLoc = glGetUniformLocation(BasicLighting->ID, "projection"); //doesnt need to be called every frame but leaving here for now
 		//BasicLighting.setMat4("model", model);
 		//BasicLighting.setMat4("view", view);
-		BasicLighting->setMat4("projection", projection);
+		//BasicLighting->setMat4("projection", projection);
+
 	}
 	Shader& getShader(std::string name) { //this might not work cuz it got changed to unique_ptr
 		auto it = g_Shaders.find(name);

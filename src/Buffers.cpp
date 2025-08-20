@@ -22,8 +22,7 @@ namespace Buffers {
 		4,0,3, 3,7,4, // left
 		5,1,2, 2,6,5  // right
 	};
-	void configureBuffers() {
-		//and then do work thats gonna change a lot here? and write a bunch of helpers?  
+	void configureBuffers() { //invalid draw issue has to be here right?  
 		VAO vao;
 		VBO vbo;
 		EBO ebo;

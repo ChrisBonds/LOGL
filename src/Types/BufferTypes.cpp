@@ -13,7 +13,7 @@ void VAO::bind() {
 }
 void VBO::Init(const void* data, GLsizeiptr size, unsigned int stride, std::string name, GLenum usage) {
 	Name = name;
-	Size = sizeof(data); //not correct
+	Size = size; //not correct
 	Stride = stride;
 	glCreateBuffers(1, &id); //2nd param is location of names to be stored so could use g_buffers
 	glNamedBufferStorage(id, Size, data, GL_DYNAMIC_STORAGE_BIT); //dynamic storage bit indicates buffer data can be changed but not size

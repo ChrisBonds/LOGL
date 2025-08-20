@@ -2,7 +2,7 @@
 #include "Shaders.hpp"
 
 
-Shader::Shader(const char* vertex_path, const char* fragment_path, std::string name) {
+Shader::Shader(const char* vertex_path, const char* fragment_path) {
 	//huge ass constructor
 	std::unordered_set<std::string> vertIncludes;
 	std::unordered_set<std::string> fragIncludes;
@@ -69,6 +69,9 @@ void Shader::setFloat(const std::string& name, float val) const{
 }
 void Shader::setMat4(const std::string& name, glm::mat4 val)const {
 	glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, glm::value_ptr(val));
+}
+void Shader::setVec3(const std::string& name, glm::vec3 val)const {
+	glUniform3fv(glGetUniformLocation(ID, name.c_str()), 1,  glm::value_ptr(val));
 }
 
 void Shader::checkCompileErrors(GLint shader, std::string type) {
