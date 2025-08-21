@@ -12,7 +12,7 @@ namespace Renderer {
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
 		glm::mat4 view = Camera::getCurrentCamera().getViewMatrix();//please work
-		glm::vec3 objColor = glm::vec3(1.0f, 0.0f, 0.0f);
+		glm::vec3 objColor = glm::vec3(0.5f, 0.1f, 0.1f);
 		glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
 
 		glm::mat4 projection = glm::mat4(1.0f);
@@ -32,6 +32,7 @@ namespace Renderer {
 		BasicLighting->setVec3("objColor", objColor);
 		BasicLighting->setVec3("lightColor", lightColor);
 		BasicLighting->setMat4("projection", projection);
+		BasicLighting->setVec3("LightPos", lightPos);
 		//BasicLighting.setMat4("projection", projection);
 
 		glBindVertexArray(Buffers::g_buffers["cubeVAO"]);

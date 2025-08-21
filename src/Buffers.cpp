@@ -22,6 +22,50 @@ namespace Buffers {
 		4,0,3, 3,7,4, // left
 		5,1,2, 2,6,5  // right
 	};
+	static const float cubeVerticesPosNormal[]{
+		//pos				  //normal
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+
+		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+		 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+		 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+	};
 	void configureBuffers() { //invalid draw issue has to be here right?  
 		VAO cubevao;
 		VAO lightCubevao;
@@ -29,7 +73,8 @@ namespace Buffers {
 		EBO ebo;
 		cubevao.Init("cubeVAO");
 		lightCubevao.Init("lightCubeVAO");
-		vbo.Init(cubeVertices, sizeof(cubeVertices), 5 * sizeof(float), "VBO");
+		//vbo.Init(cubeVertices, sizeof(cubeVertices), 5 * sizeof(float), "VBO");
+		vbo.Init(cubeVerticesPosNormal, sizeof(cubeVerticesPosNormal), 6 * sizeof(float), "VBO");
 		ebo.Init(cubeIndices, sizeof(cubeIndices), "EBO");
 
 		//bind ebo to vbo
@@ -43,7 +88,7 @@ namespace Buffers {
 		// 	glEnableVertexAttribArray(0); ?
 		//texcoord location = 1
 		glEnableVertexArrayAttrib(cubevao.id, 1);
-		glVertexArrayAttribFormat(cubevao.id, 1, 2, GL_FLOAT, GL_FALSE, 3 * sizeof(float));
+		glVertexArrayAttribFormat(cubevao.id, 1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float));
 		glVertexArrayAttribBinding(cubevao.id, 1, 0); 	
 
 		//vertex attributes for lightcubeVAO
@@ -54,7 +99,7 @@ namespace Buffers {
 		glVertexArrayAttribFormat(lightCubevao.id, 0, 3, GL_FLOAT, GL_FALSE, 0);
 		glVertexArrayAttribBinding(lightCubevao.id, 0, 0);
 		glEnableVertexArrayAttrib(lightCubevao.id, 1);
-		glVertexArrayAttribFormat(lightCubevao.id, 1, 2, GL_FLOAT, GL_FALSE, 3 * sizeof(float));
+		glVertexArrayAttribFormat(lightCubevao.id, 1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float));
 		glVertexArrayAttribBinding(lightCubevao.id, 1, 0);
 	}
 };
