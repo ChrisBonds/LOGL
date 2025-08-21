@@ -7,13 +7,15 @@
 
 namespace Renderer {
 	void Update() {
-		glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+		//glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+		glm::vec3 lightPos(1.0f, 1.0f, 1.0f);
 		//TODO DRAW A BASIC TRIANGLE SO I CAN CHECK IF I FUCKED MY BUFFERS UP
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
 		glm::mat4 view = Camera::getCurrentCamera().getViewMatrix();//please work
 		glm::vec3 objColor = glm::vec3(0.5f, 0.1f, 0.1f);
 		glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
+
 
 		glm::mat4 projection = glm::mat4(1.0f);
 		projection = glm::perspective(
@@ -32,11 +34,14 @@ namespace Renderer {
 		BasicLighting->setVec3("objColor", objColor);
 		BasicLighting->setVec3("lightColor", lightColor);
 		BasicLighting->setMat4("projection", projection);
-		BasicLighting->setVec3("LightPos", lightPos);
+		BasicLighting->setVec3("lightPos", lightPos);
+		BasicLighting->setVec3("viewPos", Camera::getCurrentCamera().pos);
 		//BasicLighting.setMat4("projection", projection);
 
 		glBindVertexArray(Buffers::g_buffers["cubeVAO"]);
-		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+		//glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
 
 		//now draw lamp first try	
 		auto& LightCube = Shaders::g_Shaders["basic_light_cube"];
@@ -49,6 +54,8 @@ namespace Renderer {
 		LightCube->setMat4("model", model);
 
 		glBindVertexArray(Buffers::g_buffers["lightCubeVAO"]);
-		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+		//glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+	
 	}
 }

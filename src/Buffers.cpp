@@ -86,7 +86,7 @@ namespace Buffers {
 		glVertexArrayAttribFormat(cubevao.id, 0, 3, GL_FLOAT, GL_FALSE, 0);
 		glVertexArrayAttribBinding(cubevao.id, 0, 0);
 		// 	glEnableVertexAttribArray(0); ?
-		//texcoord location = 1
+		//NORMAL location = 1
 		glEnableVertexArrayAttrib(cubevao.id, 1);
 		glVertexArrayAttribFormat(cubevao.id, 1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float));
 		glVertexArrayAttribBinding(cubevao.id, 1, 0); 	
