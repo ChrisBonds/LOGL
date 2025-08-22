@@ -11,6 +11,6 @@ Textures
     -> grass
 
 Buffers 
-    dont rlly need to work in here until i do model importing then good to configure standard buffers 
+    same thing i just did w/ g_shaders for proper ownership
 
 SSBO

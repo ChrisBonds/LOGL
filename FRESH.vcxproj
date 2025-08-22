@@ -142,6 +142,8 @@
     <None Include="res\shaders\OpenGL\common.glsl" />
     <None Include="res\shaders\OpenGL\basic_lighting.frag" />
     <None Include="res\shaders\OpenGL\basic_lighting.vert" />
+    <None Include="res\shaders\OpenGL\cook_torrance.frag" />
+    <None Include="res\shaders\OpenGL\cook_torrance.vert" />
     <None Include="res\shaders\OpenGL\test.frag" />
     <None Include="res\shaders\OpenGL\test.vert" />
   </ItemGroup>
